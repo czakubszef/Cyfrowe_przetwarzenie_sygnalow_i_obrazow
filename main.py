@@ -19,7 +19,7 @@ def wczytaj_ekg1():
 
 #Funkcja służąca wczytaniu danych z pliku ekg100.txt oraz ich wyswietlenia
 def wczytaj_ekg100():
-    data = np.loadtxt("ekg100.txt")
+    data = np.loadtxt("ekg100.txt", max_rows=15000)
     N=data.shape[0]
     fs = 360
     T=np.arange(N)/fs
@@ -122,9 +122,8 @@ def zadanie2():
     plt.show()
 
 
-def zadanie3():
-    data = np.loadtxt("ekg100.txt")
-    fs = 360
+def zadanie3(fs = 360):
+    data = np.loadtxt("ekg100.txt", max_rows=15000)
     N = len(data)
     t = np.arange(N) / fs
     plt.figure(figsize=(10, 4))
@@ -139,7 +138,7 @@ def zadanie3():
     freq = np.fft.fftfreq(N, 1 / fs)
     half = N // 2
     plt.figure(figsize=(10, 4))
-    plt.plot(freq[:half], fft_mag[:half])
+    plt.plot(freq[10:half], fft_mag[10:half]) #Pomijamy 11 pierwszych wartości przy wyświetlaniu
     plt.title("Widmo amplitudowe EKG")
     plt.xlabel("Częstotliwość (Hz)")
     plt.ylabel("Amplituda")
@@ -164,16 +163,11 @@ def zadanie3():
     plt.show()
     print("Maksymalny błąd:", np.max(np.abs(diff)))
 
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import butter, filtfilt, freqz
-
-def zadanie4():
+def zadanie4(rzad=4, fs=360):
     data = np.loadtxt("ekg_noise.txt")
     t = data[:, 0]
     signal = data[:, 1]
 
-    fs = 360
     N = len(signal)
 
     plt.figure(figsize=(10, 4))
@@ -199,7 +193,7 @@ def zadanie4():
 
     fc_lp = 60
     wn_lp = fc_lp / (fs / 2)
-    b_lp, a_lp = butter(4, wn_lp, btype='low')
+    b_lp, a_lp = butter(rzad, wn_lp, btype='low')
     filtered_lp = filtfilt(b_lp, a_lp, signal)
 
     w, h = freqz(b_lp, a_lp, worN=8000)
@@ -225,7 +219,7 @@ def zadanie4():
 
     fc_hp = 5
     wn_hp = fc_hp / (fs / 2)
-    b_hp, a_hp = butter(4, wn_hp, btype='high')
+    b_hp, a_hp = butter(rzad, wn_hp, btype='high')
     filtered = filtfilt(b_hp, a_hp, filtered_lp)
 
     w, h = freqz(b_hp, a_hp, worN=8000)
@@ -280,8 +274,14 @@ if __name__ == '__main__':
     if x == "2":
         zadanie2()
     if x == "3":
-        zadanie3()
+        print("Prosze podac czestotliwosc probkowania:")
+        probkowanie = input()
+        zadanie3(probkowanie)
     if x == "4":
-        zadanie4()
+        print("Prosze podac rzad filtra:")
+        rzad = input()
+        print("Prosze podac czestotliwosc probkowania:")
+        probkowanie = input()
+        zadanie4(rzad, probkowanie)
 
 
