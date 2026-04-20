@@ -122,9 +122,10 @@ def zadanie2():
     plt.show()
 
 
-def zadanie3(fs = 360):
+def zadanie3(fs1 = 360):
     data = np.loadtxt("ekg100.txt", max_rows=15000)
     N = len(data)
+    fs = fs1
     t = np.arange(N) / fs
     plt.figure(figsize=(10, 4))
     plt.plot(t, data)
@@ -275,13 +276,13 @@ if __name__ == '__main__':
         zadanie2()
     if x == "3":
         print("Prosze podac czestotliwosc probkowania:")
-        probkowanie = input()
+        probkowanie = float(input())
         zadanie3(probkowanie)
     if x == "4":
         print("Prosze podac rzad filtra:")
-        rzad = input()
+        rzad = int(input())
         print("Prosze podac czestotliwosc probkowania:")
-        probkowanie = input()
+        probkowanie = fload(input())
         zadanie4(rzad, probkowanie)
 
 
