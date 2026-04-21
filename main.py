@@ -1,5 +1,7 @@
+import fload
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.f2py.auxfuncs import throw_error
 from scipy.signal import butter, filtfilt, freqz
 
 #Funkcja służąca wczytaniu danych z pliku ekg1.txt oraz ich wyswietlenia
@@ -284,5 +286,8 @@ if __name__ == '__main__':
         print("Prosze podac czestotliwosc probkowania:")
         probkowanie = fload(input())
         zadanie4(rzad, probkowanie)
+
+
+
 
 
